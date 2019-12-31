@@ -11,6 +11,7 @@
     "react-scripts": "3.3.0"
   },
   "scripts": {
+    "sprites": "svg-sprite -D src --symbol-dest animals -s src/*.svg",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
@@ -30,5 +31,9 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "react-svg": "^11.0.4",
+    "svg-sprite": "^1.5.0"
   }
 }
