@@ -21,6 +21,10 @@ install:
     - npm ci
     - npm run sprites
 
+  artifacts:
+    paths:
+      - src/animals/svg/sprite.symbol.svg
+
 test:
   stage: test
   script:
