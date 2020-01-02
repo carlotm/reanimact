@@ -1,14 +1,37 @@
 image: node:latest
 
+stages:
+  - build
+  - test
+  - pages
+
+variables:
+  NPM_CACHE_FOLDER: "$CI_PROJECT_DIR/.npm"
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - .npm
+    - node_modules
+
+install:
+  stage: build
+
+  script:
+    - npm ci
+
+test:
+  stage: test
+  script:
+    - npm run test
+
 pages:
   stage: deploy
   script:
-  - npm install
-  - npm run sprites
-  - npm run test
-  - npm run build
-  - rm -rf public
-  - mv build public
+    - npm run sprites
+    - npm run build
+    - rm -rf public
+    - mv build public
   artifacts:
     paths:
-    - public
+      - public
