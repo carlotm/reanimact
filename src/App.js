@@ -41,7 +41,10 @@ const Board = ({ board, current, active, arrows, toExplode }) => (
 
 const Main = ({ children }) => <section className="Main">{children}</section>;
 
-const OSD = () => <section className="OSD">OSD</section>;
+const OSD = ({ score }) =>
+  <section className="OSD">
+    <p class="OSD-score">Score: {score}</p>
+  </section>;
 
 const randomCell = () => Math.floor(Math.random() * 8 + 1);
 
@@ -78,6 +81,7 @@ function App() {
   const [active, setActive] = useState(false);
   const [arrows, setArrows] = useState([]);
   const [toExplode, setToExplode] = useState([]);
+  const [score, setScore] = useState(0);
 
   useEffect(() => {}, []);
 
@@ -135,6 +139,7 @@ function App() {
         const newBoard = [...board];
         toExplode.forEach(cell => newBoard[cell] = randomCell());
         setBoard(newBoard);
+        setScore(score + toExplode.length * 5);
         setToExplode([]);
       }, 600);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -189,7 +194,7 @@ function App() {
             toExplode={toExplode}
           />
         </Main>
-        <OSD />
+        <OSD score={score} />
       </div>
       <Animals style={{ display: "none" }} />
     </section>

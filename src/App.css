@@ -41,8 +41,11 @@ body {
 }
 
 .OSD {
+  font-family: "Fredoka One", cursive;
+  font-size: 24px;
   flex: 1;
-  color: white;
+  color: var(--c4);
+  padding: 40px 20px;
 }
 
 .Timer {
@@ -73,7 +76,7 @@ body {
   border: 3px solid var(--c3);
   transform: scale(1.1);
   z-index: 2;
-  transition: transform .1s;
+  transition: transform 0.1s;
 }
 
 .Cell.is-current.is-active {
@@ -88,7 +91,7 @@ body {
 }
 
 .Cell.is-boom svg {
-  animation: .6s boom;
+  animation: 0.6s boom;
 }
 
 .Cell svg {
@@ -126,7 +129,7 @@ body {
   top: -14px;
   border-color: transparent transparent var(--c4) transparent;
   border-width: 0 10px 10px 10px;
-  animation: .3s infinite alternate stn;
+  animation: 0.3s infinite alternate stn;
 }
 
 @keyframes wte {
@@ -139,7 +142,7 @@ body {
   right: -14px;
   border-color: transparent transparent transparent var(--c4);
   border-width: 10px 0 10px 10px;
-  animation: .3s infinite alternate wte;
+  animation: 0.3s infinite alternate wte;
 }
 
 @keyframes nts {
@@ -152,7 +155,7 @@ body {
   bottom: -14px;
   border-color: var(--c4) transparent transparent transparent;
   border-width: 10px 10px 0 10px;
-  animation: .3s infinite alternate nts;
+  animation: 0.3s infinite alternate nts;
 }
 
 @keyframes etw {
@@ -165,5 +168,5 @@ body {
   left: -14px;
   border-color: transparent var(--c4) transparent transparent;
   border-width: 10px 10px 10px 0;
-  animation: .3s infinite alternate etw;
+  animation: 0.3s infinite alternate etw;
 }
