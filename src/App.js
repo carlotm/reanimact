@@ -4,15 +4,17 @@ import "./App.css";
 
 const Timer = () => <section className="Timer">timer</section>;
 
-const Cell = ({ val, current, active, index, arrows }) => {
+const Cell = ({ val, current, active, index, arrows, explode }) => {
   const currentClass = current ? "is-current" : "";
   const activeClass = active && current ? "is-active" : "";
+  const explodeClass = explode ? "is-boom" : "";
+  const stateClasses = `${currentClass} ${activeClass} ${explodeClass}`;
   const arrowsEl =
     active && current
       ? arrows.map(dir => <i key={dir} className={`Arrow Arrow--${dir}`} />)
       : null;
   return (
-    <div className={`Cell Cell--${val} ${currentClass} ${activeClass}`}>
+    <div className={`Cell Cell--${val} ${stateClasses}`}>
       <svg viewBox="0 0 100 100">
         <use xlinkHref={`#${val}`} />
       </svg>
@@ -21,7 +23,7 @@ const Cell = ({ val, current, active, index, arrows }) => {
   );
 };
 
-const Board = ({ board, current, active, arrows }) => (
+const Board = ({ board, current, active, arrows, toExplode }) => (
   <section className="Board">
     {board.map((c, i) => (
       <Cell
@@ -31,6 +33,7 @@ const Board = ({ board, current, active, arrows }) => (
         active={active}
         index={i}
         arrows={arrows}
+        explode={toExplode.includes(i)}
       />
     ))}
   </section>
@@ -74,6 +77,7 @@ function App() {
   const [current, setCurrent] = useState(0);
   const [active, setActive] = useState(false);
   const [arrows, setArrows] = useState([]);
+  const [toExplode, setToExplode] = useState([]);
 
   useEffect(() => {}, []);
 
@@ -92,39 +96,49 @@ function App() {
     return newBoard;
   };
 
-  const updateBoard = () => {
+  const getExplosiveCells = () => {
     if (board.includes(undefined)) return null;
 
-    const newBoard = [...board];
+    let result = [];
     for (let r = 0; r < 64; r += 8)
-      findSeq(rowValues(r))
-        .map(s => s.map(off => r + off))
-        .forEach(s => s.forEach(i => (newBoard[i] = randomCell())));
+      result.push(
+        findSeq(rowValues(r))
+          .map(s => s.map(off => r + off))
+          .flat()
+      );
     for (let c = 0; c < 8; c++)
-      findSeq(colValues(c))
-        .map(s => s.map(off => c + off * 8))
-        .forEach(s => s.forEach(i => (newBoard[i] = randomCell())));
-    return arrayEquals(board, newBoard) ? null : newBoard;
+      result.push(
+        findSeq(colValues(c))
+          .map(s => s.map(off => c + off * 8))
+          .flat()
+      );
+    return result.flat();
   };
 
   const showArrows = () => {
     let arr = [];
-    if (current > 7)
-      arr.push("n");
-    if (current % 8 !== 7)
-      arr.push("e");
-    if (current < 56)
-      arr.push("s");
-    if (current % 8 !== 0)
-      arr.push("w");
+    if (current > 7) arr.push("n");
+    if (current % 8 !== 7) arr.push("e");
+    if (current < 56) arr.push("s");
+    if (current % 8 !== 0) arr.push("w");
     setArrows(arr);
   };
 
   useEffect(() => {
-    const newBoard = updateBoard();
-    if (newBoard) setBoard(newBoard);
+    setToExplode(getExplosiveCells());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board]);
+
+  useEffect(() => {
+    if (toExplode.length > 0)
+      setTimeout(() => {
+        const newBoard = [...board];
+        toExplode.forEach(cell => newBoard[cell] = randomCell());
+        setBoard(newBoard);
+        setToExplode([]);
+      }, 600);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [toExplode]);
 
   useEffect(() => {
     if (!active) return;
@@ -172,6 +186,7 @@ function App() {
             current={current}
             active={active}
             arrows={arrows}
+            toExplode={toExplode}
           />
         </Main>
         <OSD />

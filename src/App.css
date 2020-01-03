@@ -70,7 +70,6 @@ body {
 
 .Cell.is-current {
   background-color: var(--c1);
-  /* box-shadow: 0 0 0 3px var(--c3); */
   border: 3px solid var(--c3);
   transform: scale(1.1);
   z-index: 2;
@@ -79,6 +78,17 @@ body {
 
 .Cell.is-current.is-active {
   background-color: var(--c3);
+}
+
+@keyframes boom {
+  to {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+.Cell.is-boom svg {
+  animation: .6s boom;
 }
 
 .Cell svg {
