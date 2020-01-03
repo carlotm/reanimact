@@ -1,29 +1,57 @@
+:root {
+  --c1: #f5f5f5;
+  --c2: #ebe6e6;
+  --c3: #293a80;
+  --c4: #010038;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: var(--c1);
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .Reanimact {
   width: 100vw;
   height: 100vh;
   display: flex;
-  padding: 60px;
+  align-items: center;
+  justify-content: center;
+}
+
+.Canvas {
+  display: flex;
+  height: 480px;
+  width: 640px;
 }
 
 .Main {
-  flex: 0 0 calc(100vh - 120px);
+  flex: 0 0 480px;
   display: flex;
   flex-direction: column;
 }
 
 .OSD {
-  background-color: #E1BD5A;
   flex: 1;
+  color: white;
 }
 
 .Timer {
-  background-color: #E1BD5A;
   flex: 0 0 30px;
+  color: white;
 }
 
 .Board {
-  background-color: #E1BD5A;
-  border: 2px solid #E1BD5A;
+  border: 2px solid var(--c1);
   flex: 1;
   display: grid;
   grid-template-columns: repeat(8, 1fr);
@@ -32,40 +60,100 @@
 }
 
 .Cell {
-  background-color: #F3D47F;
+  background-color: var(--c2);
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
-  border-radius: 2px;
+  border-radius: 3px;
 }
 
 .Cell.is-current {
-  background-color: #FCE8AC;
-}
-
-.Cell.is-current:after {
-  content: "";
-  border-radius: 2px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  box-shadow: 0 0 0 4px #FF6500;
+  background-color: var(--c1);
+  /* box-shadow: 0 0 0 3px var(--c3); */
+  border: 3px solid var(--c3);
+  transform: scale(1.1);
   z-index: 2;
-  transition: box-shadow .1s;
+  transition: transform .1s;
 }
 
 .Cell.is-current.is-active {
-  background-color: #EB0554;
-}
-
-.Cell.is-current.is-active:after {
-  box-shadow: 0 0 0 6px #EB0554;
+  background-color: var(--c3);
 }
 
 .Cell svg {
-  width: 90%;
+  width: 80%;
   height: auto;
+}
+
+.Arrow {
+  width: 0;
+  height: 0;
+  position: absolute;
+  z-index: 5;
+  border-style: solid;
+}
+
+.Arrow--n,
+.Arrow--s {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.Arrow--e,
+.Arrow--w {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+@keyframes stn {
+  100% {
+    transform: translate(-50%, -50%);
+  }
+}
+
+.Arrow--n {
+  top: -14px;
+  border-color: transparent transparent var(--c4) transparent;
+  border-width: 0 10px 10px 10px;
+  animation: .3s infinite alternate stn;
+}
+
+@keyframes wte {
+  100% {
+    transform: translate(50%, -50%);
+  }
+}
+
+.Arrow--e {
+  right: -14px;
+  border-color: transparent transparent transparent var(--c4);
+  border-width: 10px 0 10px 10px;
+  animation: .3s infinite alternate wte;
+}
+
+@keyframes nts {
+  100% {
+    transform: translate(-50%, 50%);
+  }
+}
+
+.Arrow--s {
+  bottom: -14px;
+  border-color: var(--c4) transparent transparent transparent;
+  border-width: 10px 10px 0 10px;
+  animation: .3s infinite alternate nts;
+}
+
+@keyframes etw {
+  100% {
+    transform: translate(-50%, -50%);
+  }
+}
+
+.Arrow--w {
+  left: -14px;
+  border-color: transparent var(--c4) transparent transparent;
+  border-width: 10px 10px 10px 0;
+  animation: .3s infinite alternate etw;
 }

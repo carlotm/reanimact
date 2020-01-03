@@ -4,22 +4,34 @@ import "./App.css";
 
 const Timer = () => <section className="Timer">timer</section>;
 
-const Cell = ({ val, current, active, index }) => {
+const Cell = ({ val, current, active, index, arrows }) => {
   const currentClass = current ? "is-current" : "";
-  const activeClass = active ? "is-active" : "";
+  const activeClass = active && current ? "is-active" : "";
+  const arrowsEl =
+    active && current
+      ? arrows.map(dir => <i key={dir} className={`Arrow Arrow--${dir}`} />)
+      : null;
   return (
     <div className={`Cell Cell--${val} ${currentClass} ${activeClass}`}>
       <svg viewBox="0 0 100 100">
         <use xlinkHref={`#${val}`} />
       </svg>
+      {arrowsEl}
     </div>
   );
 };
 
-const Board = ({ board, current, active }) => (
+const Board = ({ board, current, active, arrows }) => (
   <section className="Board">
     {board.map((c, i) => (
-      <Cell val={c} key={i} current={current === i} active={active} index={i} />
+      <Cell
+        val={c}
+        key={i}
+        current={current === i}
+        active={active}
+        index={i}
+        arrows={arrows}
+      />
     ))}
   </section>
 );
@@ -61,6 +73,7 @@ function App() {
   const [board, setBoard] = useState(randomBoard());
   const [current, setCurrent] = useState(0);
   const [active, setActive] = useState(false);
+  const [arrows, setArrows] = useState([]);
 
   useEffect(() => {}, []);
 
@@ -94,11 +107,30 @@ function App() {
     return arrayEquals(board, newBoard) ? null : newBoard;
   };
 
+  const showArrows = () => {
+    let arr = [];
+    if (current > 7)
+      arr.push("n");
+    if (current % 8 !== 7)
+      arr.push("e");
+    if (current < 56)
+      arr.push("s");
+    if (current % 8 !== 0)
+      arr.push("w");
+    setArrows(arr);
+  };
+
   useEffect(() => {
     const newBoard = updateBoard();
     if (newBoard) setBoard(newBoard);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board]);
+
+  useEffect(() => {
+    if (!active) return;
+    showArrows();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [active]);
 
   const moveBy = delta => {
     if (active) {
@@ -132,11 +164,18 @@ function App() {
 
   return (
     <section className="Reanimact" tabIndex="0" onKeyUp={onKey}>
-      <Main>
-        <Timer />
-        <Board board={board} current={current} active={active} />
-      </Main>
-      <OSD />
+      <div className="Canvas">
+        <Main>
+          <Timer />
+          <Board
+            board={board}
+            current={current}
+            active={active}
+            arrows={arrows}
+          />
+        </Main>
+        <OSD />
+      </div>
       <Animals style={{ display: "none" }} />
     </section>
   );
