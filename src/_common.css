@@ -1,0 +1,35 @@
+:root {
+  --c1: #f5f5f5;
+  --c2: #ebe6e6;
+  --c3: #293a80;
+  --c4: #010038;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: var(--c1);
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Footer {
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 100%;
+  text-align: right;
+  font-family: "Cute Font", cursive;
+  font-size: 24px;
+}
+
+a {
+  color: var(--c3);
+}
