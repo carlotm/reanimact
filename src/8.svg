@@ -26,10 +26,10 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="11.2"
-     inkscape:cx="5.863826"
+     inkscape:cx="20.595969"
      inkscape:cy="22.646079"
      inkscape:document-units="cm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="g6291"
      showgrid="true"
      units="px"
      inkscape:pagecheckerboard="true"
@@ -73,9 +73,9 @@
            cy="284.8858"
            cx="3.9333212"
            id="circle6273"
-           style="opacity:1;fill:#3449d7;fill-opacity:1;stroke:none;stroke-width:2.7742269;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+           style="opacity:1;fill:#717171;fill-opacity:1;stroke:none;stroke-width:2.7742269;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
         <circle
-           style="opacity:1;fill:#3449d7;fill-opacity:1;stroke:none;stroke-width:2.7742269;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+           style="opacity:1;fill:#717171;fill-opacity:1;stroke:none;stroke-width:2.7742269;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
            id="circle6275"
            cx="10.159787"
            cy="284.8858"
@@ -85,7 +85,7 @@
            d="m 12.98078,291.76337 c 0,1.68992 -1.312598,2.65721 -2.972782,2.74411 -0.075461,0 -0.1509261,0 -0.2286764,0 A 3.1625835,3.1625835 0 0 1 8.6359442,294.2971 h -0.016006 a 3.7022578,3.7022578 0 0 0 -2.7120932,0 H 5.891838 a 3.1625835,3.1625835 0 0 1 -1.1433783,0.21038 c -0.077751,0 -0.1532128,0 -0.2286753,0 -1.6601848,-0.08 -2.9727833,-1.04734 -2.9727833,-2.74411 0,-1.18454 0.6425783,-1.76081 1.6007297,-2.3142 v -1.45895 a 3.9995361,3.9995361 0 0 1 6.6315917,-3.01165 c 0.068607,0.0595 0.1326324,0.1189 0.1966613,0.18294 a 4.0338374,4.0338374 0 0 1 0.6608732,0.87125 3.9652347,3.9652347 0 0 1 0.514519,1.95746 v 1.33775 c 1.081636,0.51453 1.829405,1.15939 1.829404,2.4354 z"
            class="cls-1"
            inkscape:connector-curvature="0"
-           style="fill:#475fff;fill-opacity:1;stroke-width:0.27742273" />
+           style="fill:#999999;fill-opacity:1;stroke-width:0.27742273" />
         <circle
            id="circle6279"
            r="0.34301338"
