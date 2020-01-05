@@ -23,7 +23,29 @@
   font-size: 24px;
   flex: 1;
   color: var(--c4);
-  padding: 40px 10px;
+  padding: 0 10px;
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.OSD-line--bottom {
+  justify-content: flex-end;
+  margin-top: auto;
+}
+
+.OSD-audio {
+  border: 0;
+  border-radius: 3px;
+  padding: 10px;
+  background-color: var(--c2);
+  cursor: pointer;
+}
+
+.OSD-audio svg {
+  fill: var(--c3);
+  height: 20px;
+  width: auto;
 }
 
 .Timer {

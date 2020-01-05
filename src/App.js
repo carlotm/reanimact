@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ReactComponent as Animals } from "./animals/svg/sprite.symbol.svg";
 import "./App.css";
+import audioFile from "./ost.mp3";
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();
@@ -65,10 +66,17 @@ const Board = ({ board, current, active, arrows, toExplode }) => (
 
 const Main = ({ children }) => <section className="Main">{children}</section>;
 
-const OSD = ({ score, level }) => (
+const OSD = ({ score, level, onplay, playing }) => (
   <section className="OSD">
     <p className="OSD-line">Level: {level}</p>
     <p className="OSD-line">Score: {score}</p>
+    <p className="OSD-line--bottom">
+      <button onClick={e => onplay()} className="OSD-audio">
+        <svg viewBox="0 0 100 100">
+          <use xlinkHref={playing ? "#mute" : "#play"} />
+        </svg>
+      </button>
+    </p>
   </section>
 );
 
@@ -110,6 +118,8 @@ function App() {
   const [score, setScore] = useState(0);
   const [progress, setProgress] = useState(100);
   const [level, setLevel] = useState(1);
+  const [audioPlaying, setPlay] = useState(false);
+  const ost = useState(new Audio(audioFile))[0];
 
   const row = () => Math.floor(current / 8);
 
@@ -157,11 +167,22 @@ function App() {
   useInterval(() => {
     if (progress <= 0) {
       alert(`Game Over! Your score is: ${score}`);
+      ost.stop();
       // eslint-disable-next-line no-restricted-globals
       location.reload();
-    } else
-      setProgress(progress - 1);
+    } else setProgress(progress - 1);
   }, 1000 / level);
+
+  const onPlay = () => {
+    ost.loop = true;
+    document.querySelector(".Reanimact").focus();
+    setPlay(!audioPlaying);
+  };
+
+  useEffect(() => {
+    if (audioPlaying) ost.play();
+    else ost.pause();
+  }, [audioPlaying, ost]);
 
   useEffect(() => {
     setToExplode(getExplosiveCells());
@@ -238,7 +259,12 @@ function App() {
             toExplode={toExplode}
           />
         </Main>
-        <OSD score={score} level={level} />
+        <OSD
+          score={score}
+          level={level}
+          onplay={onPlay}
+          playing={audioPlaying}
+        />
       </div>
       <Animals style={{ display: "none" }} />
     </section>
