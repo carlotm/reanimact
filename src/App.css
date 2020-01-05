@@ -34,6 +34,12 @@
   margin-top: auto;
 }
 
+.OSD-line--help {
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
 .OSD-audio {
   border: 0;
   border-radius: 3px;
