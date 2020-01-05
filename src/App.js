@@ -156,7 +156,7 @@ function App() {
 
   useInterval(() => {
     if (progress <= 0) {
-      alert("Game Over!");
+      alert(`Game Over! Your score is: ${score}`);
       // eslint-disable-next-line no-restricted-globals
       location.reload();
     } else
