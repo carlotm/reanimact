@@ -1,8 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ReactComponent as Animals } from "./animals/svg/sprite.symbol.svg";
 import "./App.css";
 
-const Timer = () => <section className="Timer">timer</section>;
+function useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
+
+const Timer = ({ progress }) => (
+  <section className="Timer">
+    <i className="Timer-bar" style={{ width: `${progress}%` }} />
+  </section>
+);
 
 const Cell = ({ val, current, active, index, arrows, explode }) => {
   const currentClass = current ? "is-current" : "";
@@ -41,10 +65,12 @@ const Board = ({ board, current, active, arrows, toExplode }) => (
 
 const Main = ({ children }) => <section className="Main">{children}</section>;
 
-const OSD = ({ score }) =>
+const OSD = ({ score, level }) => (
   <section className="OSD">
-    <p class="OSD-score">Score: {score}</p>
-  </section>;
+    <p className="OSD-line">Level: {level}</p>
+    <p className="OSD-line">Score: {score}</p>
+  </section>
+);
 
 const randomCell = () => Math.floor(Math.random() * 8 + 1);
 
@@ -82,8 +108,8 @@ function App() {
   const [arrows, setArrows] = useState([]);
   const [toExplode, setToExplode] = useState([]);
   const [score, setScore] = useState(0);
-
-  useEffect(() => {}, []);
+  const [progress, setProgress] = useState(100);
+  const [level, setLevel] = useState(1);
 
   const row = () => Math.floor(current / 8);
 
@@ -128,20 +154,38 @@ function App() {
     setArrows(arr);
   };
 
+  useInterval(() => {
+    if (progress <= 0) {
+      alert("Game Over!");
+      // eslint-disable-next-line no-restricted-globals
+      location.reload();
+    } else
+      setProgress(progress - 1);
+  }, 1000 / level);
+
   useEffect(() => {
     setToExplode(getExplosiveCells());
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [board]);
 
   useEffect(() => {
-    if (toExplode.length > 0)
-      setTimeout(() => {
-        const newBoard = [...board];
-        toExplode.forEach(cell => newBoard[cell] = randomCell());
-        setBoard(newBoard);
-        setScore(score + toExplode.length * 5);
-        setToExplode([]);
-      }, 600);
+    if (score >= level * 100) {
+      setLevel(level + 1);
+      setProgress(100);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [score]);
+
+  useEffect(() => {
+    if (toExplode.length === 0) return;
+
+    setTimeout(() => {
+      const newBoard = [...board];
+      toExplode.forEach(cell => (newBoard[cell] = randomCell()));
+      setBoard(newBoard);
+      setScore(score + toExplode.length * 2);
+      setProgress(Math.min(100, progress + level * 2));
+    }, 600);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [toExplode]);
 
@@ -185,7 +229,7 @@ function App() {
     <section className="Reanimact" tabIndex="0" onKeyUp={onKey}>
       <div className="Canvas">
         <Main>
-          <Timer />
+          <Timer progress={progress} />
           <Board
             board={board}
             current={current}
@@ -194,7 +238,7 @@ function App() {
             toExplode={toExplode}
           />
         </Main>
-        <OSD score={score} />
+        <OSD score={score} level={level} />
       </div>
       <Animals style={{ display: "none" }} />
     </section>

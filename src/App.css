@@ -41,16 +41,25 @@ body {
 }
 
 .OSD {
-  font-family: "Fredoka One", cursive;
+  font-family: "Cute Font", cursive;
   font-size: 24px;
   flex: 1;
   color: var(--c4);
-  padding: 40px 20px;
+  padding: 40px 10px;
 }
 
 .Timer {
   flex: 0 0 30px;
-  color: white;
+  position: relative;
+}
+
+.Timer-bar {
+  height: 8px;
+  position: absolute;
+  top: 40%;
+  left: 0;
+  background-color: var(--c3);
+  border-radius: 3px;
 }
 
 .Board {
