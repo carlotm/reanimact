@@ -11,7 +11,7 @@ export default ({ score, level, onplay, playing }) => (
       disappear.
     </p>
     <p className="OSD-line--bottom">
-      <button onClick={e => onplay()} className="OSD-audio">
+      <button onClick={() => onplay()} className="OSD-audio">
         <svg viewBox="0 0 100 100">
           <use xlinkHref={playing ? "#mute" : "#play"} />
         </svg>
