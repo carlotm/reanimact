@@ -1,0 +1,45 @@
+.Menu {
+  flex: 1;
+}
+
+.Menu-header {
+  margin-bottom: 48px;
+}
+
+.Menu-logo {
+  width: 60px;
+  height: auto;
+  float: left;
+  margin-right: 16px;
+}
+
+.Menu-title {
+  font-size: 32px;
+}
+
+.Menu-subtitle {
+  font-size: 22px;
+  color: var(--c3);
+  margin-top: 6px;
+}
+
+.Menu-item {
+  font-size: 18px;
+  display: block;
+}
+
+.Menu-item.is-cta {
+  background-color: var(--c3);
+  color: var(--c1);
+}
+
+.Menu-item + .Menu-item {
+  margin-top: 12px;
+}
+
+.Menu-item svg {
+  height: 20px;
+  width: auto;
+  margin-left: 10px;
+  vertical-align: bottom;
+}

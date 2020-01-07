@@ -7,6 +7,7 @@ import Timer from "./Timer.js";
 import Board from "./Board.js";
 import Main from "./Main.js";
 import OSD from "./OSD.js";
+import Menu from "./Menu.js";
 
 const randomCell = () => Math.floor(Math.random() * 8 + 1);
 
@@ -42,6 +43,9 @@ function App() {
   const [level, setLevel] = useState(1);
   const [audioPlaying, setPlay] = useState(false);
   const ost = useState(new Audio(audioFile))[0];
+  ost.loop = true;
+  const [playing, setPlaying] = useState(false);
+  const [sound, setSound] = useState(false);
 
   const row = () => Math.floor(current / 8);
 
@@ -86,19 +90,31 @@ function App() {
     setArrows(arr);
   };
 
-  useInterval(() => {
-    if (progress <= 0) {
-      ost.pause();
-      alert(`Game Over! Your score is: ${score}`);
-      // eslint-disable-next-line no-restricted-globals
-      location.reload();
-    } else setProgress(progress - 1);
-  }, 1000 / level);
+  useInterval(
+    () => {
+      if (progress <= 0) {
+        ost.pause();
+        alert(`Game Over! Your score is: ${score}`);
+        // eslint-disable-next-line no-restricted-globals
+        location.reload();
+      } else setProgress(progress - 1);
+    },
+    playing ? 1000 / level : null
+  );
 
   const onPlay = () => {
-    ost.loop = true;
     document.querySelector(".Reanimact").focus();
     setPlay(!audioPlaying);
+  };
+
+  const onNewGame = () => {
+    document.querySelector(".Reanimact").focus();
+    setPlaying(true);
+    setPlay(sound);
+  };
+
+  const onSetSound = () => {
+    setSound(!sound);
   };
 
   useEffect(() => {
@@ -168,26 +184,27 @@ function App() {
     }
   };
 
+  const Canvas = playing ? (
+    <>
+      <Main>
+        <Timer progress={progress} />
+        <Board
+          board={board}
+          current={current}
+          active={active}
+          arrows={arrows}
+          toExplode={toExplode}
+        />
+      </Main>
+      <OSD score={score} level={level} onplay={onPlay} playing={audioPlaying} />
+    </>
+  ) : (
+    <Menu sound={sound} onNewGame={onNewGame} onSetSound={onSetSound} />
+  );
+
   return (
     <section className="Reanimact" tabIndex="0" onKeyUp={onKey}>
-      <div className="Canvas">
-        <Main>
-          <Timer progress={progress} />
-          <Board
-            board={board}
-            current={current}
-            active={active}
-            arrows={arrows}
-            toExplode={toExplode}
-          />
-        </Main>
-        <OSD
-          score={score}
-          level={level}
-          onplay={onPlay}
-          playing={audioPlaying}
-        />
-      </div>
+      <div className="Canvas">{Canvas}</div>
       <Animals style={{ display: "none" }} />
     </section>
   );
