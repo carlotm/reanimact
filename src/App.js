@@ -8,6 +8,7 @@ import Board from "./Board.js";
 import Main from "./Main.js";
 import OSD from "./OSD.js";
 import Menu from "./Menu.js";
+import Over from "./Over.js";
 
 const randomCell = () => Math.floor(Math.random() * 8 + 1);
 
@@ -46,6 +47,7 @@ function App() {
   ost.loop = true;
   const [playing, setPlaying] = useState(false);
   const [sound, setSound] = useState(false);
+  const [over, setOver] = useState(false);
 
   const row = () => Math.floor(current / 8);
 
@@ -94,12 +96,10 @@ function App() {
     () => {
       if (progress <= 0) {
         ost.pause();
-        alert(`Game Over! Your score is: ${score}`);
-        // eslint-disable-next-line no-restricted-globals
-        location.reload();
+        setOver(true);
       } else setProgress(progress - 1);
     },
-    playing ? 1000 / level : null
+    playing && !over ? 1000 / level : null
   );
 
   const onPlay = () => {
@@ -110,6 +110,12 @@ function App() {
   const onNewGame = () => {
     document.querySelector(".Reanimact").focus();
     setPlaying(true);
+    setOver(false);
+    setProgress(100);
+    setLevel(1);
+    setCurrent(0);
+    setBoard(randomBoard());
+    setScore(0);
     setPlay(sound);
   };
 
@@ -184,9 +190,14 @@ function App() {
     }
   };
 
+  const GameOver = over ? (
+    <Over score={score} onTryAgain={onNewGame} />
+  ) : null;
+
   const Canvas = playing ? (
     <>
       <Main>
+        {GameOver}
         <Timer progress={progress} />
         <Board
           board={board}
@@ -196,7 +207,12 @@ function App() {
           toExplode={toExplode}
         />
       </Main>
-      <OSD score={score} level={level} onplay={onPlay} playing={audioPlaying} />
+      <OSD
+        score={score}
+        level={level}
+        onplay={onPlay}
+        audioPlaying={audioPlaying}
+      />
     </>
   ) : (
     <Menu sound={sound} onNewGame={onNewGame} onSetSound={onSetSound} />
