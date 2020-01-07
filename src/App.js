@@ -1,98 +1,16 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { ReactComponent as Animals } from "./animals/svg/sprite.symbol.svg";
+import { useInterval } from "./hooks.js";
 import "./App.css";
 import audioFile from "./ost.mp3";
-
-function useInterval(callback, delay) {
-  const savedCallback = useRef();
-
-  // Remember the latest callback.
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  // Set up the interval.
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
-    if (delay !== null) {
-      let id = setInterval(tick, delay);
-      return () => clearInterval(id);
-    }
-  }, [delay]);
-}
-
-const Timer = ({ progress }) => (
-  <section className="Timer">
-    <i className="Timer-bar" style={{ width: `${progress}%` }} />
-  </section>
-);
-
-const Cell = ({ val, current, active, index, arrows, explode }) => {
-  const currentClass = current ? "is-current" : "";
-  const activeClass = active && current ? "is-active" : "";
-  const explodeClass = explode ? "is-boom" : "";
-  const stateClasses = `${currentClass} ${activeClass} ${explodeClass}`;
-  const arrowsEl =
-    active && current
-      ? arrows.map(dir => <i key={dir} className={`Arrow Arrow--${dir}`} />)
-      : null;
-  return (
-    <div className={`Cell Cell--${val} ${stateClasses}`}>
-      <svg viewBox="0 0 100 100">
-        <use xlinkHref={`#${val}`} />
-      </svg>
-      {arrowsEl}
-    </div>
-  );
-};
-
-const Board = ({ board, current, active, arrows, toExplode }) => (
-  <section className="Board">
-    {board.map((c, i) => (
-      <Cell
-        val={c}
-        key={i}
-        current={current === i}
-        active={active}
-        index={i}
-        arrows={arrows}
-        explode={toExplode.includes(i)}
-      />
-    ))}
-  </section>
-);
-
-const Main = ({ children }) => <section className="Main">{children}</section>;
-
-const OSD = ({ score, level, onplay, playing }) => (
-  <section className="OSD">
-    <p className="OSD-line">Level: {level}</p>
-    <p className="OSD-line">Score: {score}</p>
-    <p className="OSD-line--help">
-      Arrow keys to move, spacebar and arrow keys to swap hippo in any direction.
-      Align 3 or more hippos of the same colors to make them disappear.
-    </p>
-    <p className="OSD-line--bottom">
-      <button onClick={e => onplay()} className="OSD-audio">
-        <svg viewBox="0 0 100 100">
-          <use xlinkHref={playing ? "#mute" : "#play"} />
-        </svg>
-      </button>
-    </p>
-  </section>
-);
+import Timer from "./Timer.js";
+import Board from "./Board.js";
+import Main from "./Main.js";
+import OSD from "./OSD.js";
 
 const randomCell = () => Math.floor(Math.random() * 8 + 1);
 
 const randomBoard = () => Array.from(new Array(64), randomCell);
-
-export const arrayEquals = (arr1, arr2) => {
-  if (!arr1 || !arr2 || arr1.length !== arr2.length) return false;
-  for (let i = 0; i < arr1.length; i++) if (arr1[i] !== arr2[i]) return false;
-  return true;
-};
 
 export const findSeq = arr => {
   if (arr.length !== 8 || arr.includes(undefined)) return [];
