@@ -1,0 +1,13 @@
+.Timer {
+  flex: 0 0 30px;
+  position: relative;
+}
+
+.Timer-bar {
+  height: 8px;
+  position: absolute;
+  top: 40%;
+  left: 0;
+  background-color: var(--c3);
+  border-radius: 3px;
+}

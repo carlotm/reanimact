@@ -1,0 +1,8 @@
+.Board {
+  border: 2px solid var(--c1);
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  grid-gap: 2px;
+}
