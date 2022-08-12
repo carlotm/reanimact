@@ -14,7 +14,7 @@ const randomCell = () => Math.floor(Math.random() * 8 + 1);
 
 const randomBoard = () => Array.from(new Array(64), randomCell);
 
-export const findSeq = arr => {
+export const findSeq = (arr) => {
   if (arr.length !== 8 || arr.includes(undefined)) return [];
 
   let result = [];
@@ -53,11 +53,12 @@ function App() {
 
   const col = () => Math.floor(current % 8);
 
-  const rowValues = r => [...Array(8).keys()].map(off => board[r + off]);
+  const rowValues = (r) => [...Array(8).keys()].map((off) => board[r + off]);
 
-  const colValues = c => [...Array(8).keys()].map(off => board[c + off * 8]);
+  const colValues = (c) =>
+    [...Array(8).keys()].map((off) => board[c + off * 8]);
 
-  const swapCell = delta => {
+  const swapCell = (delta) => {
     const newBoard = [...board];
     newBoard[current] = board[current + delta];
     newBoard[current + delta] = board[current];
@@ -71,13 +72,13 @@ function App() {
     for (let r = 0; r < 64; r += 8)
       result.push(
         findSeq(rowValues(r))
-          .map(s => s.map(off => r + off))
+          .map((s) => s.map((off) => r + off))
           .flat()
       );
     for (let c = 0; c < 8; c++)
       result.push(
         findSeq(colValues(c))
-          .map(s => s.map(off => c + off * 8))
+          .map((s) => s.map((off) => c + off * 8))
           .flat()
       );
     return result.flat();
@@ -146,7 +147,7 @@ function App() {
 
     setTimeout(() => {
       const newBoard = [...board];
-      toExplode.forEach(cell => (newBoard[cell] = randomCell()));
+      toExplode.forEach((cell) => (newBoard[cell] = randomCell()));
       setBoard(newBoard);
       setScore(score + toExplode.length * 2);
       setProgress(Math.min(100, progress + level * 2));
@@ -160,7 +161,7 @@ function App() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [active]);
 
-  const moveBy = delta => {
+  const moveBy = (delta) => {
     if (active) {
       setBoard(swapCell(delta));
       setActive(false);
@@ -168,21 +169,25 @@ function App() {
     setCurrent(current + delta);
   };
 
-  const onKey = event => {
+  const onKey = (event) => {
     switch (event.keyCode) {
       case 32:
         setActive(!active);
         break;
       case 37:
+      case 72:
         if (col() - 1 >= 0) moveBy(-1);
         break;
       case 38:
+      case 75:
         if (row() - 1 >= 0) moveBy(-8);
         break;
       case 39:
+      case 76:
         if (col() + 1 <= 7) moveBy(1);
         break;
       case 40:
+      case 74:
         if (row() + 1 <= 7) moveBy(8);
         break;
       default:
@@ -190,9 +195,7 @@ function App() {
     }
   };
 
-  const GameOver = over ? (
-    <Over score={score} onTryAgain={onNewGame} />
-  ) : null;
+  const GameOver = over ? <Over score={score} onTryAgain={onNewGame} /> : null;
 
   const Canvas = playing ? (
     <>
