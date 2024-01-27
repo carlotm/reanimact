@@ -2,9 +2,7 @@
 
 A web game where you have to align 3 or more hippos of the same color.
 
-https://reanimact.netlify.app/
-
-[![Netlify Status](https://api.netlify.com/api/v1/badges/b5adf292-4171-4147-a054-20427f876292/deploy-status)](https://app.netlify.com/sites/reanimact/deploys)
+[Play now!](https://carlotm.github.io/reanimact)
 
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
