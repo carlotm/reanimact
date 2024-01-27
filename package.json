@@ -1,5 +1,6 @@
 {
   "name": "reanimact",
+  "homepage" : "https://carlotm.github.io/reanimact",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
